@@ -2,6 +2,8 @@ import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
+import StyleWrapper from '@/components/style-wrapper';
+
 const App: NextPage<AppProps> = ({ Component, pageProps }) => (
   <>
     <Head>
@@ -11,7 +13,9 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => (
       <meta name="description" content="The Helper" />
       <link rel="icon" href="/fav.png" />
     </Head>
-    <Component {...pageProps} />
+    <StyleWrapper>
+      <Component {...pageProps} />
+    </StyleWrapper>
   </>
 );
 

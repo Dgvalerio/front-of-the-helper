@@ -1,5 +1,18 @@
 import { NextPage } from 'next';
 
-const Home: NextPage = () => <h1>Front of The Helper</h1>;
+import { Button, Typography } from '@mui/material';
+
+import useUiStore from '@/store/ui/store';
+
+const Home: NextPage = () => {
+  const { switchThemeMode } = useUiStore();
+
+  return (
+    <main>
+      <Typography variant="h1">The Helper</Typography>
+      <Button onClick={switchThemeMode}>Switch Theme</Button>
+    </main>
+  );
+};
 
 export default Home;
