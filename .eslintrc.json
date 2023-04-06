@@ -9,15 +9,17 @@
     "google",
     "prettier",
     "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
     "next/core-web-vitals"
   ],
   "plugins": [
     "prettier",
     "eslint-plugin-import-helpers",
-    "@typescript-eslint",
+    "@typescript-eslint/eslint-plugin",
     "react-hooks"
   ],
   "rules": {
+    "@typescript-eslint/interface-name-prefix": "off",
     "prettier/prettier": [
       "error",
       {
@@ -25,9 +27,16 @@
         "trailingComma": "es5"
       }
     ],
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-console": "warn",
     "@typescript-eslint/consistent-type-definitions": [
       "error",
       "interface"
+    ],
+    "lines-between-class-members": [
+      "error",
+      "always"
     ],
     "no-restricted-imports": [
       "error",
@@ -37,6 +46,14 @@
         ]
       }
     ],
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "warn",
+    "require-jsdoc": "off",
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    "new-cap": "off",
     "padding-line-between-statements": [
       "error",
       {
@@ -81,16 +98,6 @@
         ]
       }
     ],
-    "@typescript-eslint/no-namespace": "off",
-    "@typescript-eslint/explicit-function-return-type": "warn",
-    "@typescript-eslint/explicit-module-boundary-types": "warn",
-    "@typescript-eslint/no-explicit-any": "warn",
-    "no-console": "warn",
-    "require-jsdoc": "off",
-    "lines-between-class-members": [
-      "error",
-      "always"
-    ],
     "import-helpers/order-imports": [
       "warn",
       {
@@ -117,11 +124,6 @@
     ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "new-cap": "off",
-    "import/prefer-default-export": "error",
-    "arrow-body-style": [
-      "error",
-      "as-needed"
-    ]
+    "import/prefer-default-export": "error"
   }
 }
