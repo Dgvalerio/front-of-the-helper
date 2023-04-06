@@ -5,11 +5,14 @@ import { create } from 'zustand';
 
 const useUiStore = create<UiStoreTypes>((set) => ({
   theme: darkTheme,
+  themeMode: 'dark',
 
   switchThemeMode(): void {
-    set((previous) => ({
-      theme: previous.theme.palette.mode === 'light' ? darkTheme : lightTheme,
-    }));
+    set((previous) =>
+      previous.theme.palette.mode === 'light'
+        ? { theme: darkTheme, themeMode: 'dark' }
+        : { theme: lightTheme, themeMode: 'light' }
+    );
   },
 }));
 
