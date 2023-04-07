@@ -3,7 +3,7 @@ import { Theme } from '@mui/material';
 export enum Load {
   Login = 'auth-user',
   RedirectToLogin = 'redirect-to-login',
-  RedirectToHome = 'redirect-to-home',
+  RedirectToConfigurations = 'redirect-to-configurations',
 }
 
 export interface UiStoreTypes {

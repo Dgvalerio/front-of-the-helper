@@ -1,3 +1,5 @@
+import { ToastContainer } from 'react-toastify';
+
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -7,6 +9,8 @@ import { ApolloProvider } from '@apollo/client';
 import apolloClient from '_/api/apollo';
 import Layout from '_/components/layout';
 import StyleWrapper from '_/components/style-wrapper';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => (
   <>
@@ -21,6 +25,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => (
       <StyleWrapper>
         <Layout>
           <Component {...pageProps} />
+          <ToastContainer />
         </Layout>
       </StyleWrapper>
     </ApolloProvider>
