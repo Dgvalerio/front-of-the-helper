@@ -2,16 +2,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { NextPage } from 'next';
 
-import {
-  DarkMode as DarkModeIcon,
-  LightMode as LightModeIcon,
-} from '@mui/icons-material';
-import { Button, Grid, IconButton, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 
 import styled from '@emotion/styled';
 
 import { Form } from '_/components/form';
-import useUiStore from '_/store/ui/store';
+import ThemeModeSwitcher from '_/components/theme-mode-switcher';
 
 import { userAuthFormSchema } from '@/user/auth/schema';
 import { useUserAuth } from '@/user/auth/service';
@@ -39,7 +35,6 @@ const Container = styled.main`
 `;
 
 const Home: NextPage = () => {
-  const { switchThemeMode, themeMode } = useUiStore();
   const userAuthForm = useForm<UserAuth.Input>({
     resolver: zodResolver(userAuthFormSchema),
   });
@@ -84,13 +79,7 @@ const Home: NextPage = () => {
         </Form.Container>
       </FormProvider>
       <footer>
-        <IconButton size="large" color="inherit" onClick={switchThemeMode}>
-          {themeMode === 'dark' ? (
-            <LightModeIcon color="disabled" />
-          ) : (
-            <DarkModeIcon color="disabled" />
-          )}
-        </IconButton>
+        <ThemeModeSwitcher />
       </footer>
     </Container>
   );
