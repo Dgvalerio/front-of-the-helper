@@ -9,7 +9,7 @@ const SignOutButton: FC = () => {
   const { wipeUser } = useUserStore();
 
   return (
-    <Tooltip title="Sair" arrow>
+    <Tooltip title="Sair" arrow placement="right">
       <IconButton
         size="large"
         color="inherit"
