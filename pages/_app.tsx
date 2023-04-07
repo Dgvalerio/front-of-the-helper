@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { ApolloProvider } from '@apollo/client';
 
 import apolloClient from '_/api/apollo';
+import Layout from '_/components/layout';
 import StyleWrapper from '_/components/style-wrapper';
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => (
@@ -18,7 +19,9 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => (
     </Head>
     <ApolloProvider client={apolloClient}>
       <StyleWrapper>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </StyleWrapper>
     </ApolloProvider>
   </>
