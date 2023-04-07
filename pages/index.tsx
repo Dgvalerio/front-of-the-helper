@@ -7,10 +7,16 @@ import { useRouter } from 'next/router';
 
 import { Button, Grid, Typography } from '@mui/material';
 
-import { Form } from '_/components/form';
-import useUiStore from '_/store/ui/store';
-import { Load } from '_/store/ui/types';
-import useUserStore from '_/store/user/store';
+import { Form } from '@components/form';
+import Loading from '@components/loading';
+
+import useAuthVerify from '@hooks/use-auth-verify';
+
+import useUiStore from '@store/ui/store';
+import { Load } from '@store/ui/types';
+import useUserStore from '@store/user/store';
+
+import { routes, RouteTypes } from '@utils/routes';
 
 import { userAuthFormSchema } from '@/user/auth/schema';
 import { useUserAuth } from '@/user/auth/service';
@@ -18,7 +24,9 @@ import { UserAuth } from '@/user/auth/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const Home: NextPage = () => {
+  const pass = useAuthVerify(RouteTypes.Protected);
   const router = useRouter();
+
   const { setUser } = useUserStore();
   const { enableLoad, disableLoad } = useUiStore();
 
@@ -38,7 +46,7 @@ const Home: NextPage = () => {
 
       if (response.data) {
         setUser(response.data.login.user);
-        await router.push('/configurations');
+        await router.push(routes.configurations());
       }
     } catch (e) {
       toast.error(`Falha ao realizar login: ${e}`);
@@ -48,6 +56,8 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => disableLoad(Load.RedirectToLogin), [disableLoad]);
+
+  if (!pass) return <Loading />;
 
   return (
     <FormProvider {...userAuthForm}>

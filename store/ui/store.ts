@@ -1,5 +1,6 @@
-import { darkTheme, lightTheme } from '_/components/style-wrapper/global.theme';
-import { Load, UiStoreTypes } from '_/store/ui/types';
+import { darkTheme, lightTheme } from '@components/style-wrapper/global.theme';
+
+import { Load, UiStoreTypes } from '@store/ui/types';
 
 import { create } from 'zustand';
 

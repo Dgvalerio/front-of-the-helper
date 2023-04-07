@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import Styles from '_/components/loading/styles';
+import Styles from '@components/loading/styles';
 
 const Loading: FC = () => (
   <Styles.Container>

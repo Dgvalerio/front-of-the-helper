@@ -108,8 +108,15 @@
           "/@apollo/",
           "/@mui/",
           "/@emotion/",
-          "/_/",
+
+          "/@api/",
+          "/@components/",
+          "/@hooks/",
+          "/@pages/",
+          "/@store/",
+          "/@utils/",
           "/@/",
+
           "module",
           [
             "parent",

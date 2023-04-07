@@ -6,9 +6,10 @@ import Head from 'next/head';
 
 import { ApolloProvider } from '@apollo/client';
 
-import apolloClient from '_/api/apollo';
-import Layout from '_/components/layout';
-import StyleWrapper from '_/components/style-wrapper';
+import apolloClient from '@api/apollo';
+
+import Layout from '@components/layout';
+import StyleWrapper from '@components/style-wrapper';
 
 import 'react-toastify/dist/ReactToastify.css';
 

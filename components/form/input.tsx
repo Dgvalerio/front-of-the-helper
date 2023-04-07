@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { TextField } from '@mui/material';
 
-import { FormTypes } from '_/components/form/types';
+import { FormTypes } from '@components/form/types';
 
 export const Input: FC<FormTypes.Input> = (props) => {
   const {

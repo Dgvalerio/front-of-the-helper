@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { Grid } from '@mui/material';
 
-import { FormTypes } from '_/components/form/types';
+import { FormTypes } from '@components/form/types';
 
 export const Container: FC<FormTypes.Container> = (props) => {
   const { handleSubmit } = useFormContext();

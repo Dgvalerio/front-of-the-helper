@@ -6,7 +6,7 @@ import {
 } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
-import useUiStore from '_/store/ui/store';
+import useUiStore from '@store/ui/store';
 
 const ThemeModeSwitcher: FC = () => {
   const { themeMode, switchThemeMode } = useUiStore();

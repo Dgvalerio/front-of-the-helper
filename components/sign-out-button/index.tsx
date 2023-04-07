@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Logout } from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material';
 
-import useUserStore from '_/store/user/store';
+import useUserStore from '@store/user/store';
 
 const SignOutButton: FC = () => {
   const { wipeUser } = useUserStore();

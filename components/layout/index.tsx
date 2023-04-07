@@ -4,11 +4,12 @@ import { Box } from '@mui/material';
 
 import styled from '@emotion/styled';
 
-import Loading from '_/components/loading';
-import SignOutButton from '_/components/sign-out-button';
-import ThemeModeSwitcher from '_/components/theme-mode-switcher';
-import useUiStore from '_/store/ui/store';
-import useUserStore from '_/store/user/store';
+import Loading from '@components/loading';
+import SignOutButton from '@components/sign-out-button';
+import ThemeModeSwitcher from '@components/theme-mode-switcher';
+
+import useUiStore from '@store/ui/store';
+import useUserStore from '@store/user/store';
 
 const Container = styled(Box)`
   &,
