@@ -105,9 +105,10 @@
         "groups": [
           "/^react/",
           "/^next/",
-          "/@firebase/",
+          "/@apollo/",
           "/@mui/",
           "/@emotion/",
+          "/_/",
           "/@/",
           "module",
           [

@@ -1,0 +1,13 @@
+{
+  "name": "The Helper GraphQL Schema",
+  "schemaPath": "schema.gql",
+  "extensions": {
+    "endpoints": {
+      "TheHelper": {
+        "schemaPath": "api.graphql",
+        "url": "http://localhost:3001/graphql",
+        "introspect": true
+      }
+    }
+  }
+}

@@ -2,7 +2,10 @@ import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import StyleWrapper from '@/components/style-wrapper';
+import { ApolloProvider } from '@apollo/client';
+
+import apolloClient from '_/api/apollo';
+import StyleWrapper from '_/components/style-wrapper';
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => (
   <>
@@ -13,9 +16,11 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => (
       <meta name="description" content="The Helper" />
       <link rel="icon" href="/fav.png" />
     </Head>
-    <StyleWrapper>
-      <Component {...pageProps} />
-    </StyleWrapper>
+    <ApolloProvider client={apolloClient}>
+      <StyleWrapper>
+        <Component {...pageProps} />
+      </StyleWrapper>
+    </ApolloProvider>
   </>
 );
 
