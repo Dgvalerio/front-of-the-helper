@@ -4,12 +4,12 @@ import { Box } from '@mui/material';
 
 import styled from '@emotion/styled';
 
+import Bar from '@components/layout/bar';
+import LeftBar from '@components/layout/left-bar';
 import Loading from '@components/loading';
-import SignOutButton from '@components/sign-out-button';
 import ThemeModeSwitcher from '@components/theme-mode-switcher';
 
 import useUiStore from '@store/ui/store';
-import useUserStore from '@store/user/store';
 
 const Container = styled(Box)`
   &,
@@ -26,26 +26,7 @@ const Container = styled(Box)`
   }
 `;
 
-const Bar = styled(Box)`
-  display: flex;
-
-  min-height: 4rem;
-  min-width: 4rem;
-
-  justify-content: center;
-  align-items: center;
-`;
-
 const TopBar = styled(Bar)``;
-
-const LeftBar = styled(Bar)`
-  flex-direction: column;
-
-  hr {
-    width: 40%;
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-`;
 
 const RightBar = styled(Bar)`
   flex-direction: column;
@@ -54,22 +35,13 @@ const RightBar = styled(Bar)`
 const BottomBar = styled(Bar)``;
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
-  const { user } = useUserStore();
   const { loading } = useUiStore();
 
   return (
     <>
       <TopBar />
       <Container>
-        <LeftBar>
-          {user && (
-            <>
-              <ThemeModeSwitcher />
-              <hr />
-              <SignOutButton />
-            </>
-          )}
-        </LeftBar>
+        <LeftBar />
         <main>{children}</main>
         <RightBar>
           <ThemeModeSwitcher />
