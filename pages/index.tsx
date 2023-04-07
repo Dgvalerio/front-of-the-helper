@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { NextPage } from 'next';
 
@@ -6,10 +6,11 @@ import {
   DarkMode as DarkModeIcon,
   LightMode as LightModeIcon,
 } from '@mui/icons-material';
-import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Button, Grid, IconButton, Typography } from '@mui/material';
 
 import styled from '@emotion/styled';
 
+import { Form } from '_/components/form';
 import useUiStore from '_/store/ui/store';
 
 import { userAuthFormSchema } from '@/user/auth/schema';
@@ -39,11 +40,7 @@ const Container = styled.main`
 
 const Home: NextPage = () => {
   const { switchThemeMode, themeMode } = useUiStore();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<UserAuth.Input>({
+  const userAuthForm = useForm<UserAuth.Input>({
     resolver: zodResolver(userAuthFormSchema),
   });
 
@@ -63,51 +60,29 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      <Grid container justifyContent="center" alignItems="center" flex={1}>
-        <Grid item xs={6}>
-          <Grid
-            container
-            component="form"
-            justifyContent="flex-end"
-            spacing={4}
-            onSubmit={handleSubmit(handleLogin)}
-          >
-            <Grid item xs={12}>
-              <Typography variant="h4" component="h1" textAlign="center">
-                Bem-vindo ao The Helper
-              </Typography>
-              <Typography component="p" textAlign="center">
-                Antes de tudo, faça login para continuar:
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="E-mail"
-                type="email"
-                fullWidth
-                {...register('email')}
-                error={!!errors.email}
-                helperText={errors.email?.message}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Senha"
-                type="password"
-                fullWidth
-                {...register('password')}
-                error={!!errors.password}
-                helperText={errors.password?.message}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Button type="submit" variant="outlined" fullWidth>
-                Login
-              </Button>
-            </Grid>
+      <FormProvider {...userAuthForm}>
+        <Form.Container onSubmit={handleLogin}>
+          <Grid item xs={12}>
+            <Typography variant="h4" component="h1" textAlign="center">
+              Bem-vindo ao The Helper
+            </Typography>
+            <Typography component="p" textAlign="center">
+              Antes de tudo, faça login para continuar:
+            </Typography>
           </Grid>
-        </Grid>
-      </Grid>
+          <Grid item xs={12}>
+            <Form.Input label="E-mail" type="email" name="email" />
+          </Grid>
+          <Grid item xs={12}>
+            <Form.Input label="Senha" type="password" name="password" />
+          </Grid>
+          <Grid item xs={4}>
+            <Button type="submit" variant="outlined" fullWidth>
+              Login
+            </Button>
+          </Grid>
+        </Form.Container>
+      </FormProvider>
       <footer>
         <IconButton size="large" color="inherit" onClick={switchThemeMode}>
           {themeMode === 'dark' ? (
