@@ -8,7 +8,7 @@ import { Button, IconButton, Typography } from '@mui/material';
 
 import styled from '@emotion/styled';
 
-import useUiStore from '@/store/ui/store';
+import useUiStore from '_/store/ui/store';
 
 const Container = styled.main`
   &,
