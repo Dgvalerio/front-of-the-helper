@@ -15,7 +15,7 @@ export const Container: FC<FormTypes.Container> = (props) => {
           container
           component="form"
           justifyContent="flex-end"
-          spacing={4}
+          spacing={props?.spacing || 4}
           onSubmit={handleSubmit(props.onSubmit)}
         >
           {props.children}

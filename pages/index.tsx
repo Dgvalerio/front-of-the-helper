@@ -45,7 +45,7 @@ const Home: NextPage = () => {
       });
 
       if (response.data) {
-        setUser(response.data.login.user);
+        setUser(response.data.login);
         await router.push(routes.configurations());
       }
     } catch (e) {

@@ -15,6 +15,7 @@ export const Input: FC<FormTypes.Input> = (props) => {
     <TextField
       type={props.type}
       label={props.label}
+      size={props.small ? 'small' : undefined}
       fullWidth
       {...register(props.name)}
       error={!!errors[props.name]}

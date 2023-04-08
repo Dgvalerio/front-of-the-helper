@@ -1,17 +1,25 @@
 import { UserStoreTypes } from '@store/user/types';
 
-import { UserRead } from '@/user/read/types';
+import { UserAuth } from '@/user/auth/types';
 
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-const useUserStore = create<UserStoreTypes>((set) => ({
-  setUser(user: UserRead.Output): void {
-    set({ user });
-  },
+const useUserStore = create<UserStoreTypes>()(
+  persist(
+    (set) => ({
+      setUser(data: UserAuth.Output): void {
+        const { user, token } = data;
 
-  wipeUser(): void {
-    set({ user: undefined });
-  },
-}));
+        set({ user, token });
+      },
+
+      wipeUser(): void {
+        set({ user: undefined, token: undefined });
+      },
+    }),
+    { name: 'the-helper:user-storage' }
+  )
+);
 
 export default useUserStore;

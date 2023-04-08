@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import * as React from 'react';
 
 import { NextPage } from 'next';
 
@@ -13,6 +14,8 @@ import { Load } from '@store/ui/types';
 
 import { RouteTypes } from '@utils/routes';
 
+import { RepositoryConfigurations } from '@/github/repository/configurations.view';
+
 const ConfigurationsPage: NextPage = () => {
   const pass = useAuthVerify(RouteTypes.Private);
 
@@ -23,9 +26,12 @@ const ConfigurationsPage: NextPage = () => {
   if (!pass) return <Loading />;
 
   return (
-    <Typography variant="h2" component="h1">
-      Configurations Page
-    </Typography>
+    <>
+      <Typography variant="h3" component="h1" textAlign="center" mb={4}>
+        Configurações
+      </Typography>
+      <RepositoryConfigurations />
+    </>
   );
 };
 
