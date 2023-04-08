@@ -92,7 +92,7 @@ const List: FC<{
 
 const ListSkeleton: FC<{ length?: number }> = ({ length }) => (
   <>
-    {[...new Array(length || 3)].map((i) => (
+    {[...new Array(length || 3)].map((_, i) => (
       <Grid item xs={12} container spacing={1} key={i}>
         <Grid item xs={7}>
           <Skeleton width="100%" height={40} sx={{ transform: 'none' }} />
