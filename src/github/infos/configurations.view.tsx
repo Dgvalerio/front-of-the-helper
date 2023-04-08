@@ -4,12 +4,16 @@ import { toast } from 'react-toastify';
 
 import { ApolloError } from '@apollo/client';
 
-import { Sync as SyncIcon } from '@mui/icons-material';
+import {
+  Sync as SyncIcon,
+  InfoOutlined as InfoIcon,
+} from '@mui/icons-material';
 import {
   Grid,
   IconButton,
   Skeleton,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { InputProps as StandardInputProps } from '@mui/material/Input/Input';
@@ -67,6 +71,17 @@ export const InfosConfigurations: FC = () => {
         paddingRight={2}
       >
         <Typography variant="h5" component="h2" textAlign="right">
+          <Tooltip title="Insira aqui um 'Personal access tokens (classic)' que pode ser gerado clicando aqui">
+            <IconButton
+              aria-label="Salvar token"
+              style={{ marginRight: 4, marginBottom: 4 }}
+              size="small"
+              href="https://github.com/settings/tokens/new?scopes=user,repo&description=the-helper"
+              target="_blank"
+            >
+              <InfoIcon color="disabled" fontSize="small" />
+            </IconButton>
+          </Tooltip>
           Github Token
         </Typography>
       </Grid>
