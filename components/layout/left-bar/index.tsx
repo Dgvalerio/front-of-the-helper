@@ -2,7 +2,10 @@ import { FC } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { Settings as SettingsIcon } from '@mui/icons-material';
+import {
+  Commit as CommitIcon,
+  Settings as SettingsIcon,
+} from '@mui/icons-material';
 import { IconButton, SvgIconTypeMap, Tooltip } from '@mui/material';
 import { OverridableComponent } from '@mui/types';
 
@@ -26,6 +29,17 @@ const Container = styled(Bar)`
   }
 `;
 
+const redirectLoad = (goTo: Routes): Load => {
+  switch (goTo) {
+    case Routes.Login:
+      return Load.RedirectToLogin;
+    case Routes.Configurations:
+      return Load.RedirectToConfigurations;
+    case Routes.GithubCommitsLoad:
+      return Load.RedirectToGithubCommitsLoad;
+  }
+};
+
 const GoTo: FC<{
   route: Routes;
   name: string;
@@ -38,7 +52,7 @@ const GoTo: FC<{
   const handler = (): void => {
     if (router.route === route) return;
 
-    enableLoad(Load.RedirectToConfigurations);
+    enableLoad(redirectLoad(route));
     void router.push(route);
   };
 
@@ -69,6 +83,11 @@ const LeftBar: FC = () => {
         name="Configurações"
         route={Routes.Configurations}
         Icon={SettingsIcon}
+      />
+      <GoTo
+        name="Carregar Commits"
+        route={Routes.GithubCommitsLoad}
+        Icon={CommitIcon}
       />
       <hr />
       <SignOutButton />
