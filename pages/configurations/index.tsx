@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { NextPage } from 'next';
 
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import Loading from '@components/loading';
 
@@ -14,6 +14,7 @@ import { Load } from '@store/ui/types';
 
 import { RouteTypes } from '@utils/routes';
 
+import { InfosConfigurations } from '@/github/infos/configurations.view';
 import { RepositoryConfigurations } from '@/github/repository/configurations.view';
 
 const ConfigurationsPage: NextPage = () => {
@@ -26,12 +27,19 @@ const ConfigurationsPage: NextPage = () => {
   if (!pass) return <Loading />;
 
   return (
-    <>
-      <Typography variant="h3" component="h1" textAlign="center" mb={4}>
-        Configurações
-      </Typography>
-      <RepositoryConfigurations />
-    </>
+    <Grid container spacing={4}>
+      <Grid item xs={12}>
+        <Typography variant="h3" component="h1" textAlign="center">
+          Configurações
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <InfosConfigurations />
+      </Grid>
+      <Grid item xs={12}>
+        <RepositoryConfigurations />
+      </Grid>
+    </Grid>
   );
 };
 

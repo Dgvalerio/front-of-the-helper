@@ -281,7 +281,7 @@ export const RepositoryConfigurations: FC = () => {
         style={{ borderRight: '1px solid rgba(255, 255, 255, 0.1)' }}
         paddingRight={2}
       >
-        <Typography variant="h4" component="h2" textAlign="right">
+        <Typography variant="h5" component="h2" textAlign="right">
           Repositórios
         </Typography>
       </Grid>
