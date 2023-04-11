@@ -1,17 +1,25 @@
 import { InputHTMLAttributes, ReactNode } from 'react';
 
 import { GridSpacing } from '@mui/material';
-import { ResponsiveStyleValue } from '@mui/system';
+import { TextFieldProps } from '@mui/material/TextField/TextField';
+import { GridSize, ResponsiveStyleValue } from '@mui/system';
+
+import { Property } from 'csstype';
 
 export namespace FormTypes {
+  import JustifyContent = Property.JustifyContent;
+
   export interface Container extends InputHTMLAttributes<HTMLInputElement> {
     children: ReactNode;
     spacing?: ResponsiveStyleValue<GridSpacing> | undefined;
     onSubmit(data: any): void;
+    xs?: GridSize;
+    justifyContent?: JustifyContent;
   }
-  export interface Input extends InputHTMLAttributes<HTMLInputElement> {
+
+  export type Input = TextFieldProps & {
     label: string;
     name: string;
-    small?: boolean;
-  }
+    boolean?: boolean;
+  };
 }

@@ -10,12 +10,12 @@ export const Container: FC<FormTypes.Container> = (props) => {
 
   return (
     <Grid container justifyContent="center" alignItems="center" flex={1}>
-      <Grid item xs={6}>
+      <Grid item xs={props.xs || 6}>
         <Grid
           container
           component="form"
-          justifyContent="flex-end"
-          spacing={props?.spacing || 4}
+          justifyContent={props.justifyContent || 'flex-end'}
+          spacing={props.spacing || 4}
           onSubmit={handleSubmit(props.onSubmit)}
         >
           {props.children}

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { TextField } from '@mui/material';
+import { FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
 
 import { FormTypes } from '@components/form/types';
 
@@ -11,11 +11,20 @@ export const Input: FC<FormTypes.Input> = (props) => {
     formState: { errors },
   } = useFormContext();
 
+  if (props.boolean) {
+    return (
+      <FormGroup>
+        <FormControlLabel
+          label={props.label}
+          control={<Switch {...register(props.name)} />}
+        />
+      </FormGroup>
+    );
+  }
+
   return (
     <TextField
-      type={props.type}
-      label={props.label}
-      size={props.small ? 'small' : undefined}
+      {...props}
       fullWidth
       {...register(props.name)}
       error={!!errors[props.name]}
