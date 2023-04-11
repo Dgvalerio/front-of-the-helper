@@ -22,6 +22,9 @@ import { Routes } from '@utils/routes';
 
 const Container = styled(Bar)`
   flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  left: 0;
 
   hr {
     width: 40%;

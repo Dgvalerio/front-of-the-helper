@@ -23,6 +23,7 @@ const Container = styled(Box)`
   main {
     flex-direction: column;
     padding: 2rem;
+    margin: 0 4rem;
   }
 `;
 
@@ -30,6 +31,9 @@ const TopBar = styled(Bar)``;
 
 const RightBar = styled(Bar)`
   flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  right: 0;
 `;
 
 const BottomBar = styled(Bar)``;
@@ -39,15 +43,18 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <TopBar />
       <Container>
         <LeftBar />
-        <main>{children}</main>
+        <main>
+          <TopBar />
+          {children}
+          <BottomBar />
+        </main>
         <RightBar>
           <ThemeModeSwitcher />
         </RightBar>
       </Container>
-      <BottomBar />
+
       {loading.length > 0 && <Loading />}
     </>
   );
