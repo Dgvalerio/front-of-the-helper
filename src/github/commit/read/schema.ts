@@ -26,11 +26,21 @@ export const gitCommitReadFormSchema = z.object({
       { message: `Formato de data inválido` }
     ),
 
-  // dayTimes
-  // Horário inicial do apontamento (no formato HH:MM).
-  //   @IsMilitaryTime()
-  // start: z.string().nonempty('O horário inicial é obrigatório'),
-  // Horário final do apontamento (no formato HH:MM).
-  //   @IsMilitaryTime()
-  // end: z.string().nonempty('O horário final é obrigatório'),
+  dayTimes: z
+    .array(
+      z.object({
+        // Horário inicial do apontamento (no formato HH:MM).
+        //   @IsMilitaryTime()
+        start: z.string().nonempty('O horário inicial é obrigatório'),
+        // Horário final do apontamento (no formato HH:MM).
+        //   @IsMilitaryTime()
+        end: z.string().nonempty('O horário final é obrigatório'),
+      })
+    )
+    .min(1, 'Insira pelo menos 1 horário')
+    .refine((times) => {
+      const aux = times.map((time) => JSON.stringify(time));
+
+      return aux.length === new Set(aux).size;
+    }, 'Os horários não podem ser repetidos!'),
 });

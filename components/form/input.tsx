@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
@@ -10,6 +10,27 @@ export const Input: FC<FormTypes.Input> = (props) => {
     register,
     formState: { errors },
   } = useFormContext();
+
+  const error = useMemo(() => {
+    if (props.name.includes('.')) {
+      const [object, index, name] = props.name.split('.');
+
+      if (errors[object]) {
+        const eObject = errors[object] as unknown as Record<
+          string,
+          Record<string, unknown>
+        >[];
+
+        if (eObject[+index] && eObject[+index][name]) {
+          return eObject[+index][name];
+        }
+      }
+
+      return undefined;
+    } else {
+      return errors[props.name];
+    }
+  }, [errors, props.name]);
 
   if (props.boolean) {
     return (
@@ -27,8 +48,8 @@ export const Input: FC<FormTypes.Input> = (props) => {
       {...props}
       fullWidth
       {...register(props.name)}
-      error={!!errors[props.name]}
-      helperText={errors[props.name] && `${errors[props.name]?.message}`}
+      error={!!error}
+      helperText={error && `${error?.message}`}
     />
   );
 };

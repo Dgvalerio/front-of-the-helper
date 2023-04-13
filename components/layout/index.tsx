@@ -27,16 +27,12 @@ const Container = styled(Box)`
   }
 `;
 
-const TopBar = styled(Bar)``;
-
 const RightBar = styled(Bar)`
   flex-direction: column;
   height: 100vh;
   position: fixed;
   right: 0;
 `;
-
-const BottomBar = styled(Bar)``;
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { loading } = useUiStore();
@@ -45,11 +41,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
     <>
       <Container>
         <LeftBar />
-        <main>
-          <TopBar />
-          {children}
-          <BottomBar />
-        </main>
+        <main>{children}</main>
         <RightBar>
           <ThemeModeSwitcher />
         </RightBar>
