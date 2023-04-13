@@ -105,10 +105,18 @@
         "groups": [
           "/^react/",
           "/^next/",
-          "/@firebase/",
+          "/@apollo/",
           "/@mui/",
           "/@emotion/",
+
+          "/@api/",
+          "/@components/",
+          "/@hooks/",
+          "/@pages/",
+          "/@store/",
+          "/@utils/",
           "/@/",
+
           "module",
           [
             "parent",
@@ -124,6 +132,6 @@
     ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "import/prefer-default-export": "error"
+    "import/prefer-default-export": "off"
   }
 }

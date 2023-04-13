@@ -1,6 +1,17 @@
+import { ToastContainer } from 'react-toastify';
+
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+
+import { ApolloProvider } from '@apollo/client';
+
+import apolloClient from '@api/apollo';
+
+import Layout from '@components/layout';
+import StyleWrapper from '@components/style-wrapper';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => (
   <>
@@ -11,7 +22,14 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => (
       <meta name="description" content="The Helper" />
       <link rel="icon" href="/fav.png" />
     </Head>
-    <Component {...pageProps} />
+    <ApolloProvider client={apolloClient}>
+      <StyleWrapper>
+        <Layout>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </Layout>
+      </StyleWrapper>
+    </ApolloProvider>
   </>
 );
 
