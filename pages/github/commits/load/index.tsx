@@ -23,6 +23,7 @@ import useAuthVerify from '@hooks/use-auth-verify';
 
 import useUiStore from '@store/ui/store';
 import { Load } from '@store/ui/types';
+import useUserStore from '@store/user/store';
 
 import { errorHandler } from '@utils/error-handler';
 import { RouteTypes } from '@utils/routes';
@@ -66,6 +67,7 @@ const GithubCommitsLoadPage: NextPage = () => {
 
   const [load, result] = useGithubCommitReadGrouped();
 
+  const { wipeUser } = useUserStore();
   const { disableLoad } = useUiStore();
 
   const gitCommitReadForm = useForm<GithubCommitRead.Input>({
@@ -98,7 +100,9 @@ const GithubCommitsLoadPage: NextPage = () => {
         },
       });
     } catch (e) {
-      errorHandler(e);
+      const message = errorHandler(e);
+
+      if (message === 'Unauthorized') wipeUser();
     }
   };
 

@@ -8,6 +8,8 @@ import { Card, CardContent, Grid, Typography } from '@mui/material';
 
 import { Form } from '@components/form';
 
+import useUserStore from '@store/user/store';
+
 import { errorHandler } from '@utils/error-handler';
 
 import { GithubCommitRead } from '@/github/commit/read/types';
@@ -33,6 +35,8 @@ type AppointmentSchema = z.infer<typeof appointmentSchema>;
 export const GroupedList: FC<{
   result: QueryResult<GithubCommitRead.QueryGrouped, GithubCommitRead.Options>;
 }> = ({ result: { data, loading, error } }) => {
+  const { wipeUser } = useUserStore();
+
   const appointmentForm = useForm<AppointmentSchema>({
     resolver: zodResolver(appointmentSchema),
   });
@@ -74,7 +78,11 @@ export const GroupedList: FC<{
     );
   }, [append, data, remove]);
 
-  useEffect(() => errorHandler(error), [error]);
+  useEffect(() => {
+    const message = errorHandler(error);
+
+    if (message === 'Unauthorized') wipeUser();
+  }, [error, wipeUser]);
 
   if (loading) {
     return (
