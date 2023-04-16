@@ -4,7 +4,14 @@ import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
 import { QueryResult } from '@apollo/client';
 
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Grid,
+  Paper,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 
 import { Form } from '@components/form';
 
@@ -31,6 +38,29 @@ export const appointmentSchema = z.object({
 });
 
 type AppointmentSchema = z.infer<typeof appointmentSchema>;
+
+const ListSkeleton: FC<{ length?: number }> = ({ length }) => (
+  <Grid container spacing={1} alignContent="center">
+    {[...new Array(length || 3)].map((_, i) => (
+      <Grid item xs={12} key={i}>
+        <Grid item xs={12} container component={Paper} p={0.5}>
+          <Grid item xs={4} p={0.5}>
+            <Skeleton height={40} sx={{ transform: 'none' }} />
+          </Grid>
+          <Grid item xs={4} p={0.5}>
+            <Skeleton height={40} sx={{ transform: 'none' }} />
+          </Grid>
+          <Grid item xs={4} p={0.5}>
+            <Skeleton height={40} sx={{ transform: 'none' }} />
+          </Grid>
+          <Grid item xs={12} p={0.5}>
+            <Skeleton height={128} sx={{ transform: 'none' }} />
+          </Grid>
+        </Grid>
+      </Grid>
+    ))}
+  </Grid>
+);
 
 export const GroupedList: FC<{
   result: QueryResult<GithubCommitRead.QueryGrouped, GithubCommitRead.Options>;
@@ -84,15 +114,7 @@ export const GroupedList: FC<{
     if (message === 'Unauthorized') wipeUser();
   }, [error, wipeUser]);
 
-  if (loading) {
-    return (
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography>Loading</Typography>
-        </Grid>
-      </Grid>
-    );
-  }
+  if (loading) return <ListSkeleton />;
 
   return (
     <FormProvider {...appointmentForm}>
