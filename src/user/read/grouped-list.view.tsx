@@ -5,12 +5,12 @@ import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { QueryResult } from '@apollo/client';
 
 import {
+  Button,
   Card,
   CardContent,
   Grid,
   Paper,
   Skeleton,
-  Typography,
 } from '@mui/material';
 
 import { Form } from '@components/form';
@@ -77,7 +77,14 @@ export const GroupedList: FC<{
   });
 
   const handleSubmit = (data: AppointmentSchema): void => {
-    console.log({ data });
+    const json = JSON.stringify(data);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = 'appointments.json';
+    link.click();
   };
 
   useEffect(() => {
@@ -167,6 +174,11 @@ export const GroupedList: FC<{
             </Card>
           </Grid>
         ))}
+        <Grid item xs={12}>
+          <Button type="submit" variant="outlined" fullWidth>
+            Processar e gerar apontamentos
+          </Button>
+        </Grid>
       </Form.Container>
     </FormProvider>
   );
