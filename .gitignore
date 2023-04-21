@@ -5,6 +5,7 @@
 
 # Apollo Client
 /api/api.graphql
+/api/schema.gpl
 
 # dependencies
 /node_modules

@@ -1,0 +1,7 @@
+schema: schema.graphql
+documents: '**/*.graphql'
+extensions:
+  endpoints:
+    TheHelper:
+      url: http://localhost:3001/graphql
+      introspect: true
