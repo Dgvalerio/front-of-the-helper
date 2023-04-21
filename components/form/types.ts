@@ -12,6 +12,7 @@ export namespace FormTypes {
   export interface Container extends InputHTMLAttributes<HTMLInputElement> {
     children: ReactNode;
     spacing?: ResponsiveStyleValue<GridSpacing> | undefined;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSubmit(data: any): void;
     xs?: GridSize;
     justifyContent?: JustifyContent;
