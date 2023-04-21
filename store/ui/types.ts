@@ -2,6 +2,7 @@ import { Theme } from '@mui/material';
 
 export enum Load {
   Login = 'auth-user',
+  SignUp = 'auth-create',
   RedirectToLogin = 'redirect-to-login',
   RedirectToConfigurations = 'redirect-to-configurations',
   RedirectToGithubCommitsLoad = 'redirect-to-github-commits-load',
