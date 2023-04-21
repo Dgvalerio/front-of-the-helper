@@ -30,9 +30,7 @@ export const InfosConfigurations: FC = () => {
   const { wipeUser } = useUserStore();
   const { data, loading: getLoading, error, refetch } = useGithubInfosRead();
 
-  const [token, setToken] = useState<string>(
-    `${data?.getOneGithubInfos.token}`
-  );
+  const [token, setToken] = useState<string>('');
 
   const [createInfos, { loading: createLoading }] = useGithubInfosCreate();
   const [updateInfos, { loading: updateLoading }] = useGithubInfosUpdate();
@@ -68,6 +66,10 @@ export const InfosConfigurations: FC = () => {
 
     if (message === 'Unauthorized') wipeUser();
   }, [error, wipeUser]);
+
+  useEffect(() => {
+    if (data) setToken(data?.getOneGithubInfos.token);
+  }, [data]);
 
   return (
     <Grid container spacing={1} px={8}>
