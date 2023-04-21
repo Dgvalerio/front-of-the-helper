@@ -4,6 +4,7 @@ export enum Load {
   Login = 'auth-user',
   SignUp = 'auth-create',
   RedirectToLogin = 'redirect-to-login',
+  RedirectToSignUp = 'redirect-to-sign-up',
   RedirectToConfigurations = 'redirect-to-configurations',
   RedirectToGithubCommitsLoad = 'redirect-to-github-commits-load',
 }
