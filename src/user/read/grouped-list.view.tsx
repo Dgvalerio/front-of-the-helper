@@ -174,11 +174,13 @@ export const GroupedList: FC<{
             </Card>
           </Grid>
         ))}
-        <Grid item xs={12}>
-          <Button type="submit" variant="outlined" fullWidth>
-            Processar e gerar apontamentos
-          </Button>
-        </Grid>
+        {fields.length > 0 && (
+          <Grid item xs={12}>
+            <Button type="submit" variant="outlined" fullWidth>
+              Processar e gerar apontamentos
+            </Button>
+          </Grid>
+        )}
       </Form.Container>
     </FormProvider>
   );

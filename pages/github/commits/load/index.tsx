@@ -21,6 +21,7 @@ import Loading from '@components/loading';
 
 import useAuthVerify from '@hooks/use-auth-verify';
 
+import useTimesheetStore from '@store/timesheet/store';
 import useUiStore from '@store/ui/store';
 import { Load } from '@store/ui/types';
 import useUserStore from '@store/user/store';
@@ -69,6 +70,7 @@ const GithubCommitsLoadPage: NextPage = () => {
 
   const { wipeUser } = useUserStore();
   const { disableLoad } = useUiStore();
+  const { dayTimes, setDayTimes } = useTimesheetStore();
 
   const gitCommitReadForm = useForm<GithubCommitRead.Input>({
     resolver: zodResolver(gitCommitReadFormSchema),
@@ -87,6 +89,7 @@ const GithubCommitsLoadPage: NextPage = () => {
     data: z.infer<typeof gitCommitReadFormSchema>
   ): Promise<void> => {
     try {
+      setDayTimes(data.dayTimes);
       await load({
         variables: {
           options: {
@@ -105,6 +108,11 @@ const GithubCommitsLoadPage: NextPage = () => {
       if (message === 'Unauthorized') wipeUser();
     }
   };
+
+  useEffect(() => {
+    remove();
+    dayTimes.forEach(({ start, end }) => append({ start, end }));
+  }, [append, dayTimes, remove]);
 
   useEffect(() => disableLoad(Load.RedirectToGithubCommitsLoad), [disableLoad]);
 
