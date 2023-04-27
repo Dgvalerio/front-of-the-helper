@@ -36,6 +36,8 @@ const redirectLoad = (goTo: Routes): Load => {
   switch (goTo) {
     case Routes.Login:
       return Load.RedirectToLogin;
+    case Routes.SignUp:
+      return Load.RedirectToSignUp;
     case Routes.Configurations:
       return Load.RedirectToConfigurations;
     case Routes.GithubCommitsLoad:

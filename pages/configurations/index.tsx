@@ -16,6 +16,7 @@ import { RouteTypes } from '@utils/routes';
 
 import { InfosConfigurations } from '@/github/infos/configurations.view';
 import { RepositoryConfigurations } from '@/github/repository/configurations.view';
+import { TimesheetConfigurations } from '@/timesheet/infos/configurations.view';
 
 const ConfigurationsPage: NextPage = () => {
   const pass = useAuthVerify(RouteTypes.Private);
@@ -35,6 +36,9 @@ const ConfigurationsPage: NextPage = () => {
       </Grid>
       <Grid item xs={12}>
         <InfosConfigurations />
+      </Grid>
+      <Grid item xs={12}>
+        <TimesheetConfigurations />
       </Grid>
       <Grid item xs={12}>
         <RepositoryConfigurations />

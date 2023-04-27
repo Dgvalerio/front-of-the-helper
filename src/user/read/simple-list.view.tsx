@@ -11,6 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import useUserStore from '@store/user/store';
+
 import { errorHandler } from '@utils/error-handler';
 
 import { GithubCommitRead } from '@/github/commit/read/types';
@@ -18,7 +20,13 @@ import { GithubCommitRead } from '@/github/commit/read/types';
 export const SimpleList: FC<{
   result: QueryResult<GithubCommitRead.Query, GithubCommitRead.Options>;
 }> = ({ result: { data, loading, error } }) => {
-  useEffect(() => errorHandler(error), [error]);
+  const { wipeUser } = useUserStore();
+
+  useEffect(() => {
+    const message = errorHandler(error);
+
+    if (message === 'Unauthorized') wipeUser();
+  }, [error, wipeUser]);
 
   return loading ? (
     <Grid item xs={12}>

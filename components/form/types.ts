@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, ReactNode } from 'react';
+import { Control } from 'react-hook-form';
 
 import { GridSpacing } from '@mui/material';
 import { TextFieldProps } from '@mui/material/TextField/TextField';
@@ -12,6 +13,7 @@ export namespace FormTypes {
   export interface Container extends InputHTMLAttributes<HTMLInputElement> {
     children: ReactNode;
     spacing?: ResponsiveStyleValue<GridSpacing> | undefined;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSubmit(data: any): void;
     xs?: GridSize;
     justifyContent?: JustifyContent;
@@ -21,5 +23,7 @@ export namespace FormTypes {
     label: string;
     name: string;
     boolean?: boolean;
+    options?: { label: string; value: string }[];
+    control?: Control;
   };
 }

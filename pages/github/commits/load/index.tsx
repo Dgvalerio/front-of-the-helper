@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import * as React from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { NextPage } from 'next';
 
@@ -21,8 +22,10 @@ import Loading from '@components/loading';
 
 import useAuthVerify from '@hooks/use-auth-verify';
 
+import useTimesheetStore from '@store/timesheet/store';
 import useUiStore from '@store/ui/store';
 import { Load } from '@store/ui/types';
+import useUserStore from '@store/user/store';
 
 import { errorHandler } from '@utils/error-handler';
 import { RouteTypes } from '@utils/routes';
@@ -30,6 +33,7 @@ import { RouteTypes } from '@utils/routes';
 import { gitCommitReadFormSchema } from '@/github/commit/read/schema';
 import { useGithubCommitReadGrouped } from '@/github/commit/read/service';
 import { GithubCommitRead } from '@/github/commit/read/types';
+import { useGetAllTimesheetClients } from '@/timesheet/client/read/service';
 import { GroupedList } from '@/user/read/grouped-list.view';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -61,12 +65,39 @@ const Container = styled(Box)`
   }
 `;
 
+const useToUpdateClients = (): void => {
+  const { setClients } = useTimesheetStore();
+
+  const [load, { data, loading }] = useGetAllTimesheetClients();
+
+  useEffect(() => {
+    if (!loading && !!load) {
+      toast.info('Carregando clientes, projetos e categorias...');
+      load().then(() =>
+        toast.success(
+          'Carregando clientes, projetos e categorias carregados com sucesso!'
+        )
+      );
+    }
+  }, [load, loading]);
+
+  useEffect(() => {
+    if (data) {
+      setClients(data.getAllTimesheetClient);
+    }
+  }, [data, setClients]);
+};
+
 const GithubCommitsLoadPage: NextPage = () => {
   const pass = useAuthVerify(RouteTypes.Private);
 
+  useToUpdateClients();
+
   const [load, result] = useGithubCommitReadGrouped();
 
+  const { wipeUser } = useUserStore();
   const { disableLoad } = useUiStore();
+  const { dayTimes, setDayTimes } = useTimesheetStore();
 
   const gitCommitReadForm = useForm<GithubCommitRead.Input>({
     resolver: zodResolver(gitCommitReadFormSchema),
@@ -85,6 +116,7 @@ const GithubCommitsLoadPage: NextPage = () => {
     data: z.infer<typeof gitCommitReadFormSchema>
   ): Promise<void> => {
     try {
+      setDayTimes(data.dayTimes);
       await load({
         variables: {
           options: {
@@ -98,9 +130,16 @@ const GithubCommitsLoadPage: NextPage = () => {
         },
       });
     } catch (e) {
-      errorHandler(e);
+      const message = errorHandler(e);
+
+      if (message === 'Unauthorized') wipeUser();
     }
   };
+
+  useEffect(() => {
+    remove();
+    dayTimes.forEach(({ start, end }) => append({ start, end }));
+  }, [append, dayTimes, remove]);
 
   useEffect(() => disableLoad(Load.RedirectToGithubCommitsLoad), [disableLoad]);
 

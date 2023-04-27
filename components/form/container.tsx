@@ -9,7 +9,14 @@ export const Container: FC<FormTypes.Container> = (props) => {
   const { handleSubmit } = useFormContext();
 
   return (
-    <Grid container justifyContent="center" alignItems="center" flex={1}>
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      flex={1}
+      item
+      xs={12}
+    >
       <Grid item xs={props.xs || 6}>
         <Grid
           container

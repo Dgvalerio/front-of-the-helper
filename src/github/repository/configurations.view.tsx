@@ -21,6 +21,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import useUserStore from '@store/user/store';
+
 import { errorHandler } from '@utils/error-handler';
 
 import { useGithubBranchCreate } from '@/github/branch/create/service';
@@ -114,6 +116,7 @@ const RepositorySelect: FC<{
   setBranch(branch: string): void;
 }> = ({ repository, setRepository, setBranch }) => {
   const { data, loading, error } = useGithubRepositoryLoad();
+  const { wipeUser } = useUserStore();
 
   const handleRepositoryChange = async (
     _: SyntheticEvent,
@@ -123,7 +126,9 @@ const RepositorySelect: FC<{
       setRepository(repository);
       setBranch('');
     } catch (e) {
-      errorHandler(e);
+      const message = errorHandler(e);
+
+      if (message === 'Unauthorized') wipeUser();
     }
   };
 
@@ -133,7 +138,11 @@ const RepositorySelect: FC<{
     return data.loadGithubRepositories.map((repo) => repo.fullName);
   }, [data, loading]);
 
-  useEffect(() => errorHandler(error), [error]);
+  useEffect(() => {
+    const message = errorHandler(error);
+
+    if (message === 'Unauthorized') wipeUser();
+  }, [error, wipeUser]);
 
   if (loading)
     return (
@@ -164,6 +173,7 @@ const BranchSelect: FC<{
   setBranch(branch: string): void;
 }> = ({ repository, branchName, setBranch }) => {
   const [loadBranches, { data, loading, error }] = useGithubBranchLoad();
+  const { wipeUser } = useUserStore();
 
   const handleBranchChange = async (
     _: SyntheticEvent,
@@ -172,7 +182,9 @@ const BranchSelect: FC<{
     try {
       setBranch(newValue);
     } catch (e) {
-      errorHandler(e);
+      const message = errorHandler(e);
+
+      if (message === 'Unauthorized') wipeUser();
     }
   };
 
@@ -182,7 +194,11 @@ const BranchSelect: FC<{
     return data.loadGithubBranches.map((branch) => branch.name);
   }, [data, loading]);
 
-  useEffect(() => errorHandler(error), [error]);
+  useEffect(() => {
+    const message = errorHandler(error);
+
+    if (message === 'Unauthorized') wipeUser();
+  }, [error, wipeUser]);
 
   useEffect(() => {
     if (repository) {
@@ -270,8 +286,13 @@ const Form: FC<{ reload(): void }> = ({ reload }) => {
 
 export const RepositoryConfigurations: FC = () => {
   const { data, loading, error, refetch } = useGithubRepositoryRead();
+  const { wipeUser } = useUserStore();
 
-  useEffect(() => errorHandler(error), [error]);
+  useEffect(() => {
+    const message = errorHandler(error);
+
+    if (message === 'Unauthorized') wipeUser();
+  }, [error, wipeUser]);
 
   return (
     <Grid container spacing={1} px={8}>

@@ -11,6 +11,8 @@ import apolloClient from '@api/apollo';
 import Layout from '@components/layout';
 import StyleWrapper from '@components/style-wrapper';
 
+import { Analytics } from '@vercel/analytics/react';
+
 import 'react-toastify/dist/ReactToastify.css';
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => (
@@ -30,6 +32,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => (
         </Layout>
       </StyleWrapper>
     </ApolloProvider>
+    <Analytics />
   </>
 );
 
