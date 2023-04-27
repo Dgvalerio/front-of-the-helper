@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import * as React from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { NextPage } from 'next';
 
@@ -32,6 +33,7 @@ import { RouteTypes } from '@utils/routes';
 import { gitCommitReadFormSchema } from '@/github/commit/read/schema';
 import { useGithubCommitReadGrouped } from '@/github/commit/read/service';
 import { GithubCommitRead } from '@/github/commit/read/types';
+import { useGetAllTimesheetClients } from '@/timesheet/client/read/service';
 import { GroupedList } from '@/user/read/grouped-list.view';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -63,8 +65,33 @@ const Container = styled(Box)`
   }
 `;
 
+const useToUpdateClients = (): void => {
+  const { setClients } = useTimesheetStore();
+
+  const [load, { data, loading }] = useGetAllTimesheetClients();
+
+  useEffect(() => {
+    if (!loading && !!load) {
+      toast.info('Carregando clientes, projetos e categorias...');
+      load().then(() =>
+        toast.success(
+          'Carregando clientes, projetos e categorias carregados com sucesso!'
+        )
+      );
+    }
+  }, [load, loading]);
+
+  useEffect(() => {
+    if (data) {
+      setClients(data.getAllTimesheetClient);
+    }
+  }, [data, setClients]);
+};
+
 const GithubCommitsLoadPage: NextPage = () => {
   const pass = useAuthVerify(RouteTypes.Private);
+
+  useToUpdateClients();
 
   const [load, result] = useGithubCommitReadGrouped();
 

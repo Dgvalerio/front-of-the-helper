@@ -1,7 +1,14 @@
-import { FC, useMemo } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { FC, ReactNode, useMemo } from 'react';
+import * as React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
-import { FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+  TextField,
+} from '@mui/material';
 
 import { FormTypes } from '@components/form/types';
 
@@ -31,6 +38,38 @@ export const Input: FC<FormTypes.Input> = (props) => {
       return errors[props.name];
     }
   }, [errors, props.name]);
+
+  if (props.type === 'select') {
+    return (
+      <Controller
+        name={props.name}
+        control={props.control}
+        defaultValue={null}
+        render={({ field: { onChange, value } }): JSX.Element => (
+          <Autocomplete
+            color="primary"
+            options={props.options || []}
+            getOptionLabel={(option): string => option.label}
+            value={value}
+            isOptionEqualToValue={(option, value): boolean =>
+              option.value === value.value
+            }
+            onChange={(event, newValue): void => onChange(newValue)}
+            renderInput={(params): ReactNode => (
+              <TextField
+                {...props}
+                {...params}
+                fullWidth
+                error={!!error}
+                helperText={error && `${error?.message}`}
+                size="small"
+              />
+            )}
+          />
+        )}
+      />
+    );
+  }
 
   if (props.boolean) {
     return (

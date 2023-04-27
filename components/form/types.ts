@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, ReactNode } from 'react';
+import { Control } from 'react-hook-form';
 
 import { GridSpacing } from '@mui/material';
 import { TextFieldProps } from '@mui/material/TextField/TextField';
@@ -22,5 +23,7 @@ export namespace FormTypes {
     label: string;
     name: string;
     boolean?: boolean;
+    options?: { label: string; value: string }[];
+    control?: Control;
   };
 }
