@@ -1,6 +1,7 @@
 import { FC } from 'react';
-import { Grid, Paper, Skeleton } from '@mui/material';
 import * as React from 'react';
+
+import { Grid, Paper, Skeleton } from '@mui/material';
 
 export const GroupedListSkeleton: FC<{ length?: number }> = ({ length }) => (
   <Grid container spacing={1} alignContent="center">
