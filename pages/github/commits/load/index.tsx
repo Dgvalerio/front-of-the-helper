@@ -65,39 +65,15 @@ const Container = styled(Box)`
   }
 `;
 
-const useToUpdateClients = (): void => {
-  const { setClients } = useTimesheetStore();
-
-  const [load, { data, loading }] = useGetAllTimesheetClients();
-
-  useEffect(() => {
-    if (!loading && !!load) {
-      toast.info('Carregando clientes, projetos e categorias...');
-      load().then(() =>
-        toast.success(
-          'Carregando clientes, projetos e categorias carregados com sucesso!'
-        )
-      );
-    }
-  }, [load, loading]);
-
-  useEffect(() => {
-    if (data) {
-      setClients(data.getAllTimesheetClient);
-    }
-  }, [data, setClients]);
-};
-
 const GithubCommitsLoadPage: NextPage = () => {
   const pass = useAuthVerify(RouteTypes.Private);
 
-  useToUpdateClients();
-
   const [load, result] = useGithubCommitReadGrouped();
+  const [handleLoadClients, { data: clients }] = useGetAllTimesheetClients();
 
   const { wipeUser } = useUserStore();
   const { disableLoad } = useUiStore();
-  const { dayTimes, setDayTimes } = useTimesheetStore();
+  const { dayTimes, setDayTimes, setClients } = useTimesheetStore();
 
   const gitCommitReadForm = useForm<GithubCommitRead.Input>({
     resolver: zodResolver(gitCommitReadFormSchema),
@@ -112,10 +88,21 @@ const GithubCommitsLoadPage: NextPage = () => {
     append({ start: '', end: '' });
   };
 
+  const loadClients = async (): Promise<void> => {
+    toast.info('Carregando clientes, projetos e categorias...');
+
+    await handleLoadClients();
+
+    if (clients) setClients(clients.getAllTimesheetClient);
+
+    toast.success('Clientes, projetos e categorias carregados com sucesso!');
+  };
+
   const handleSearch = async (
     data: z.infer<typeof gitCommitReadFormSchema>
   ): Promise<void> => {
     try {
+      await loadClients();
       setDayTimes(data.dayTimes);
       await load({
         variables: {
