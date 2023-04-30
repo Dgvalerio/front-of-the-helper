@@ -62,72 +62,64 @@ export const AppointmentForm: FC<{
       <Card>
         <CardContent>
           <Grid container alignItems="center" spacing={1}>
-            <Grid item xs={4}>
-              <Form.Input
-                label="Cliente"
-                name={`appointments.${index}.client`}
-                type="select"
-                options={clientOptions}
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Form.Input
-                label="Projeto"
-                name={`appointments.${index}.project`}
-                type="select"
-                options={projectOptions}
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Form.Input
-                label="Category"
-                name={`appointments.${index}.category`}
-                type="select"
-                options={categoryOptions}
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Form.Input
-                label="Data"
-                name={`appointments.${index}.date`}
-                type="date"
-                size="small"
-                disabled
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Form.Input
-                label="Horário inicial"
-                name={`appointments.${index}.start`}
-                type="time"
-                size="small"
-                disabled
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Form.Input
-                label="Horário final"
-                name={`appointments.${index}.end`}
-                type="time"
-                size="small"
-                disabled
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Form.Input
-                label="Descrição"
-                name={`appointments.${index}.description`}
-                multiline
-                rows={6}
-              />
-            </Grid>
-            <Grid item xs={12}></Grid>
+            <Form.Input
+              label="Cliente"
+              name={`appointments.${index}.client`}
+              type="select"
+              options={clientOptions}
+              size="small"
+              xs={4}
+            />
+            <Form.Input
+              label="Projeto"
+              name={`appointments.${index}.project`}
+              type="select"
+              options={projectOptions}
+              size="small"
+              xs={4}
+            />
+            <Form.Input
+              label="Category"
+              name={`appointments.${index}.category`}
+              type="select"
+              options={categoryOptions}
+              size="small"
+              xs={4}
+            />
+            <Form.Input
+              label="Data"
+              name={`appointments.${index}.date`}
+              type="date"
+              size="small"
+              disabled
+              InputLabelProps={{ shrink: true }}
+              xs={4}
+            />
+            <Form.Input
+              label="Horário inicial"
+              name={`appointments.${index}.start`}
+              type="time"
+              size="small"
+              disabled
+              InputLabelProps={{ shrink: true }}
+              xs={4}
+            />
+            <Form.Input
+              label="Horário final"
+              name={`appointments.${index}.end`}
+              type="time"
+              size="small"
+              disabled
+              InputLabelProps={{ shrink: true }}
+              xs={4}
+            />
+            <Form.Input
+              label="Descrição"
+              name={`appointments.${index}.description`}
+              multiline
+              rows={6}
+              xs={12}
+            />
           </Grid>
         </CardContent>
       </Card>

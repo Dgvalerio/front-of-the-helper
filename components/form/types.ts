@@ -25,5 +25,7 @@ export namespace FormTypes {
     boolean?: boolean;
     options?: { label: string; value: string }[];
     control?: Control;
+
+    xs?: GridSize;
   };
 }
