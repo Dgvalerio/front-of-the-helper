@@ -1,42 +1,32 @@
 import { FC, PropsWithChildren } from 'react';
 
-import { Box } from '@mui/material';
-
-import styled from '@emotion/styled';
+import { Grid } from '@mui/material';
 
 import LeftBar from '@components/layout/left-bar';
 import TopBar from '@components/layout/top-bar';
 import Loading from '@components/loading';
 
 import useUiStore from '@store/ui/store';
-
-const Container = styled(Box)`
-  &,
-  main {
-    display: flex;
-    flex: 1;
-  }
-
-  flex-direction: row;
-
-  main {
-    flex-direction: column;
-    padding: 2rem;
-    margin: 0 4rem;
-  }
-`;
+import useUserStore from '@store/user/store';
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { loading } = useUiStore();
+  const { user } = useUserStore();
 
   return (
     <>
       <TopBar />
-      <Container>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems={user ? 'stretch' : 'center'}
+        flex={1}
+      >
         <LeftBar />
-        <main>{children}</main>
-      </Container>
-
+        <Grid item xs={9} p={2}>
+          {children}
+        </Grid>
+      </Grid>
       {loading.length > 0 && <Loading />}
     </>
   );

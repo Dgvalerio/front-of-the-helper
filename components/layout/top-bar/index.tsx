@@ -6,7 +6,10 @@ import { Grid, Typography } from '@mui/material';
 
 import styled from '@emotion/styled';
 
+import SignOutButton from '@components/sign-out-button';
 import ThemeModeSwitcher from '@components/theme-mode-switcher';
+
+import useUserStore from '@store/user/store';
 
 import { routes } from '@utils/routes';
 
@@ -20,12 +23,9 @@ const Container = styled(Grid)`
         ? '#c8cbd9'
         : transparentize(0.8, '#c8cbd9')};
 
-  #brand {
+  #brand,
+  #brand-inactive {
     display: flex;
-    background-color: ${({ theme }): string =>
-      theme.palette.mode === 'light'
-        ? '#f1f2f7'
-        : transparentize(0.98, '#f1f2f7')};
 
     a {
       padding-left: 0.775rem;
@@ -36,21 +36,33 @@ const Container = styled(Grid)`
       text-decoration: none;
     }
   }
+
+  #brand {
+    background-color: ${({ theme }): string =>
+      theme.palette.mode === 'light'
+        ? '#f1f2f7'
+        : transparentize(0.98, '#f1f2f7')};
+  }
 `;
 
-const TopBar: FC = () => (
-  <Container container justifyContent="space-between">
-    <Grid item xs={3} id="brand">
-      <Link href={routes.configurations()} passHref>
-        <Typography variant="h6" component="a">
-          Timesheet
-        </Typography>
-      </Link>
-    </Grid>
-    <Grid item>
-      <ThemeModeSwitcher />
-    </Grid>
-  </Container>
-);
+const TopBar: FC = () => {
+  const { user } = useUserStore();
+
+  return (
+    <Container container justifyContent="space-between">
+      <Grid item xs={3} id={user ? 'brand' : 'brand-inactive'}>
+        <Link href={user ? routes.configurations() : routes.login()} passHref>
+          <Typography variant="h6" component="a">
+            Timesheet
+          </Typography>
+        </Link>
+      </Grid>
+      <Grid item px={1}>
+        <ThemeModeSwitcher />
+        <SignOutButton />
+      </Grid>
+    </Container>
+  );
+};
 
 export default TopBar;
