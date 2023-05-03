@@ -111,10 +111,11 @@ const ListSkeleton: FC<{ length?: number }> = ({ length }) => (
 );
 
 const RepositorySelect: FC<{
+  setSearch(search: boolean): void;
   repository: string;
   setRepository(repository: string): void;
   setBranch(branch: string): void;
-}> = ({ repository, setRepository, setBranch }) => {
+}> = ({ repository, setRepository, setBranch, setSearch }) => {
   const { data, loading, error } = useGithubRepositoryLoad();
   const { wipeUser } = useUserStore();
 
@@ -125,6 +126,7 @@ const RepositorySelect: FC<{
     try {
       setRepository(repository);
       setBranch('');
+      setSearch(options.includes(repository));
     } catch (e) {
       const message = errorHandler(e);
 
@@ -168,10 +170,11 @@ const RepositorySelect: FC<{
 };
 
 const BranchSelect: FC<{
+  search: boolean;
   repository: string;
   branchName: string;
   setBranch(branch: string): void;
-}> = ({ repository, branchName, setBranch }) => {
+}> = ({ repository, branchName, setBranch, search }) => {
   const [loadBranches, { data, loading, error }] = useGithubBranchLoad();
   const { wipeUser } = useUserStore();
 
@@ -189,10 +192,10 @@ const BranchSelect: FC<{
   };
 
   const branchOptions = useMemo(() => {
-    if (!data || loading) return [];
+    if (!data || loading || !search) return [];
 
     return data.loadGithubBranches.map((branch) => branch.name);
-  }, [data, loading]);
+  }, [data, loading, search]);
 
   useEffect(() => {
     const message = errorHandler(error);
@@ -201,10 +204,10 @@ const BranchSelect: FC<{
   }, [error, wipeUser]);
 
   useEffect(() => {
-    if (repository) {
+    if (repository && search) {
       void loadBranches({ variables: { data: { repository } } });
     }
-  }, [loadBranches, repository]);
+  }, [loadBranches, repository, search]);
 
   if (loading)
     return (
@@ -230,6 +233,7 @@ const BranchSelect: FC<{
 };
 
 const Form: FC<{ reload(): void }> = ({ reload }) => {
+  const [searchBranch, setSearchBranch] = useState(false);
   const [repository, setFullName] = useState<string>('');
   const [branchName, setBranchName] = useState<string>('');
 
@@ -249,18 +253,20 @@ const Form: FC<{ reload(): void }> = ({ reload }) => {
     } catch (e) {
       const error = e as ApolloError;
 
-      toast.error(error.message || `Falha ao criar repositório: ${error}`);
+      toast.error(error.message || `Falha ao adicionar repositório: ${error}`);
     }
   };
 
   return (
     <Grid item xs={12} container spacing={1}>
       <RepositorySelect
+        setSearch={setSearchBranch}
         repository={repository}
         setRepository={setFullName}
         setBranch={setBranchName}
       />
       <BranchSelect
+        search={searchBranch}
         repository={repository}
         branchName={branchName}
         setBranch={setBranchName}
