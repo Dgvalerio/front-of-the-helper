@@ -31,7 +31,7 @@ export const GroupedList: FC<{
     resolver: zodResolver(appointmentSchema),
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, insert, remove } = useFieldArray({
     name: 'appointments',
     control: appointmentForm.control,
   });
@@ -60,6 +60,11 @@ export const GroupedList: FC<{
     link.download = 'appointments.json';
     link.click();
   };
+
+  const handleAddBetween = (
+    position: number,
+    value: AppointmentSchema['appointments']
+  ): void => insert(position, value);
 
   useEffect(() => {
     remove();
@@ -105,7 +110,12 @@ export const GroupedList: FC<{
       <FormProvider {...appointmentForm}>
         <Form.Container spacing={1} xs={12} onSubmit={handleSubmit}>
           {fields.map((field, index) => (
-            <AppointmentForm field={field} index={index} key={field.id} />
+            <AppointmentForm
+              field={field}
+              index={index}
+              add={handleAddBetween}
+              key={field.id}
+            />
           ))}
           {fields.length > 0 && (
             <Grid item xs={12}>

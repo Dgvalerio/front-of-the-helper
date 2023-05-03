@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import * as React from 'react';
 import { FieldArrayWithId, useFormContext } from 'react-hook-form';
 
-import { Card, CardContent, Grid } from '@mui/material';
+import { Button, Card, CardContent, Divider, Grid } from '@mui/material';
 
 import { Form } from '@components/form';
 
@@ -10,10 +10,17 @@ import useTimesheetStore from '@store/timesheet/store';
 
 import { AppointmentSchema } from '@/timesheet/appointment/types';
 
-export const AppointmentForm: FC<{
+interface AppointmentFormProps {
   field: FieldArrayWithId<AppointmentSchema, 'appointments'>;
   index: number;
-}> = ({ field, index }) => {
+  add(position: number, value: AppointmentSchema['appointments']): void;
+}
+
+export const AppointmentForm: FC<AppointmentFormProps> = ({
+  field,
+  index,
+  add,
+}) => {
   const { watch, setValue } = useFormContext<AppointmentSchema>();
 
   const { clients } = useTimesheetStore();
@@ -57,72 +64,95 @@ export const AppointmentForm: FC<{
     [project?.categories]
   );
 
+  const handleAdd = (): void => {
+    add(index + 1, [
+      {
+        client: { label: '', value: '' },
+        project: { label: '', value: '' },
+        category: { label: '', value: '' },
+        date: field.date,
+        start: '00:00',
+        end: '00:01',
+        description: '',
+      },
+    ]);
+  };
+
   return (
-    <Grid item xs={12} key={field.id}>
-      <Card>
-        <CardContent>
-          <Grid container alignItems="center" spacing={1}>
-            <Form.Input
-              label="Cliente"
-              name={`appointments.${index}.client`}
-              type="select"
-              options={clientOptions}
-              size="small"
-              xs={4}
-            />
-            <Form.Input
-              label="Projeto"
-              name={`appointments.${index}.project`}
-              type="select"
-              options={projectOptions}
-              size="small"
-              xs={4}
-            />
-            <Form.Input
-              label="Category"
-              name={`appointments.${index}.category`}
-              type="select"
-              options={categoryOptions}
-              size="small"
-              xs={4}
-            />
-            <Form.Input
-              label="Data"
-              name={`appointments.${index}.date`}
-              type="date"
-              size="small"
-              disabled
-              InputLabelProps={{ shrink: true }}
-              xs={4}
-            />
-            <Form.Input
-              label="Horário inicial"
-              name={`appointments.${index}.start`}
-              type="time"
-              size="small"
-              disabled
-              InputLabelProps={{ shrink: true }}
-              xs={4}
-            />
-            <Form.Input
-              label="Horário final"
-              name={`appointments.${index}.end`}
-              type="time"
-              size="small"
-              disabled
-              InputLabelProps={{ shrink: true }}
-              xs={4}
-            />
-            <Form.Input
-              label="Descrição"
-              name={`appointments.${index}.description`}
-              multiline
-              rows={6}
-              xs={12}
-            />
-          </Grid>
-        </CardContent>
-      </Card>
-    </Grid>
+    <>
+      <Grid item xs={12} key={field.id}>
+        <Card>
+          <CardContent>
+            <Grid container alignItems="center" spacing={1}>
+              <Form.Input
+                label="Cliente"
+                name={`appointments.${index}.client`}
+                type="select"
+                options={clientOptions}
+                size="small"
+                xs={4}
+              />
+              <Form.Input
+                label="Projeto"
+                name={`appointments.${index}.project`}
+                type="select"
+                options={projectOptions}
+                size="small"
+                xs={4}
+              />
+              <Form.Input
+                label="Category"
+                name={`appointments.${index}.category`}
+                type="select"
+                options={categoryOptions}
+                size="small"
+                xs={4}
+              />
+              <Form.Input
+                label="Data"
+                name={`appointments.${index}.date`}
+                type="date"
+                size="small"
+                disabled
+                InputLabelProps={{ shrink: true }}
+                xs={4}
+              />
+              <Form.Input
+                label="Horário inicial"
+                name={`appointments.${index}.start`}
+                type="time"
+                size="small"
+                disabled
+                InputLabelProps={{ shrink: true }}
+                xs={4}
+              />
+              <Form.Input
+                label="Horário final"
+                name={`appointments.${index}.end`}
+                type="time"
+                size="small"
+                disabled
+                InputLabelProps={{ shrink: true }}
+                xs={4}
+              />
+              <Form.Input
+                label="Descrição"
+                name={`appointments.${index}.description`}
+                multiline
+                rows={6}
+                xs={12}
+              />
+            </Grid>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <Divider>
+          <Button size="small" onClick={handleAdd}>
+            Adicionar outro apontamento
+          </Button>
+        </Divider>
+      </Grid>
+    </>
   );
 };
