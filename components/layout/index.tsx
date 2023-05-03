@@ -4,10 +4,9 @@ import { Box } from '@mui/material';
 
 import styled from '@emotion/styled';
 
-import Bar from '@components/layout/bar';
 import LeftBar from '@components/layout/left-bar';
+import TopBar from '@components/layout/top-bar';
 import Loading from '@components/loading';
-import ThemeModeSwitcher from '@components/theme-mode-switcher';
 
 import useUiStore from '@store/ui/store';
 
@@ -27,24 +26,15 @@ const Container = styled(Box)`
   }
 `;
 
-const RightBar = styled(Bar)`
-  flex-direction: column;
-  height: 100vh;
-  position: fixed;
-  right: 0;
-`;
-
 const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { loading } = useUiStore();
 
   return (
     <>
+      <TopBar />
       <Container>
         <LeftBar />
         <main>{children}</main>
-        <RightBar>
-          <ThemeModeSwitcher />
-        </RightBar>
       </Container>
 
       {loading.length > 0 && <Loading />}
