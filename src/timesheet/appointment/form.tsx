@@ -2,13 +2,23 @@ import { FC, useMemo } from 'react';
 import * as React from 'react';
 import { FieldArrayWithId, useFormContext } from 'react-hook-form';
 
-import { Button, Card, CardContent, Divider, Grid } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  Typography,
+  useTheme,
+} from '@mui/material';
 
 import { Form } from '@components/form';
 
 import useTimesheetStore from '@store/timesheet/store';
 
 import { AppointmentSchema } from '@/timesheet/appointment/types';
+
+import { transparentize } from 'polished';
 
 interface AppointmentFormProps {
   field: FieldArrayWithId<AppointmentSchema, 'appointments'>;
@@ -21,7 +31,13 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
   index,
   add,
 }) => {
-  const { watch, setValue } = useFormContext<AppointmentSchema>();
+  const { palette } = useTheme();
+
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext<AppointmentSchema>();
 
   const { clients } = useTimesheetStore();
 
@@ -82,7 +98,18 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
     <>
       <Grid item xs={12} key={field.id}>
         <Card>
-          <CardContent>
+          <CardContent
+            style={{
+              backgroundColor: transparentize(
+                errors.appointments &&
+                  errors.appointments[index] &&
+                  errors.appointments[index]?.message
+                  ? 0.6
+                  : 1,
+                palette.error.dark
+              ),
+            }}
+          >
             <Grid container alignItems="center" spacing={1}>
               <Form.Input
                 label="Cliente"
@@ -101,7 +128,7 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
                 xs={4}
               />
               <Form.Input
-                label="Category"
+                label="Categoria"
                 name={`appointments.${index}.category`}
                 type="select"
                 options={categoryOptions}
@@ -113,7 +140,6 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
                 name={`appointments.${index}.date`}
                 type="date"
                 size="small"
-                disabled
                 InputLabelProps={{ shrink: true }}
                 xs={4}
               />
@@ -122,7 +148,6 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
                 name={`appointments.${index}.start`}
                 type="time"
                 size="small"
-                disabled
                 InputLabelProps={{ shrink: true }}
                 xs={4}
               />
@@ -131,7 +156,6 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
                 name={`appointments.${index}.end`}
                 type="time"
                 size="small"
-                disabled
                 InputLabelProps={{ shrink: true }}
                 xs={4}
               />
@@ -142,6 +166,13 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
                 rows={6}
                 xs={12}
               />
+              {errors.appointments && errors.appointments[index] && (
+                <Grid item xs={12}>
+                  <Typography variant="overline">
+                    {errors.appointments[index]?.message}
+                  </Typography>
+                </Grid>
+              )}
             </Grid>
           </CardContent>
         </Card>

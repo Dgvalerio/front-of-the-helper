@@ -7,6 +7,7 @@ export enum Load {
   RedirectToSignUp = 'redirect-to-sign-up',
   RedirectToConfigurations = 'redirect-to-configurations',
   RedirectToGithubCommitsLoad = 'redirect-to-github-commits-load',
+  RedirectToTimesheetAppointmentCreate = 'redirect-to-timesheet-appointment-create',
 }
 
 export interface UiStoreTypes {

@@ -3,13 +3,12 @@ import { FC } from 'react';
 import { useRouter } from 'next/router';
 
 import {
-  Settings as SettingsIcon,
-  ControlPointDuplicate as AddInSerieIcon,
   Dashboard as DashboardIcon,
   GitHub as GithubIcon,
-  MoreTime as AddIcon,
-  ViewList as ViewListIcon,
   Info as InfoIcon,
+  MoreTime as AddIcon,
+  Settings as SettingsIcon,
+  ViewList as ViewListIcon,
 } from '@mui/icons-material';
 import {
   Grid,
@@ -30,7 +29,7 @@ import useUiStore from '@store/ui/store';
 import { Load } from '@store/ui/types';
 import useUserStore from '@store/user/store';
 
-import { routes, Routes } from '@utils/routes';
+import { Routes } from '@utils/routes';
 
 import { transparentize } from 'polished';
 
@@ -92,6 +91,8 @@ const redirectLoad = (goTo: Routes): Load => {
       return Load.RedirectToConfigurations;
     case Routes.GithubCommitsLoad:
       return Load.RedirectToGithubCommitsLoad;
+    case Routes.TimesheetAppointmentCreate:
+      return Load.RedirectToTimesheetAppointmentCreate;
   }
 };
 
@@ -100,19 +101,17 @@ const items: Bar.Group[] = [
     name: 'Apontamentos',
     items: [
       { Icon: DashboardIcon, name: 'Dashboard' },
-      { Icon: AddIcon, name: 'Incluir' },
+      {
+        Icon: AddIcon,
+        name: 'Incluir',
+        route: Routes.TimesheetAppointmentCreate,
+      },
       { Icon: ViewListIcon, name: 'Visualizar' },
-    ],
-  },
-  {
-    name: 'Assistente',
-    items: [
       {
         Icon: GithubIcon,
         name: 'Incluir com Github',
-        route: routes.githubCommitsLoad(),
+        route: Routes.GithubCommitsLoad,
       },
-      { Icon: AddInSerieIcon, name: 'Incluir em série' },
     ],
   },
   {
@@ -122,7 +121,7 @@ const items: Bar.Group[] = [
       {
         Icon: SettingsIcon,
         name: 'Configurações',
-        route: routes.configurations(),
+        route: Routes.Configurations,
       },
     ],
   },

@@ -4,7 +4,11 @@ import { Fade, Typography } from '@mui/material';
 
 import Styles from '@components/loading/styles';
 
-const WithText: FC<{ texts: string[] }> = ({ texts }) => {
+const WithText: FC<{
+  texts: string[];
+  timeout?: number;
+  transition?: number;
+}> = ({ texts, transition, timeout }) => {
   const [fade, setFade] = useState(true);
   const [current, setCurrent] = useState(0);
 
@@ -15,9 +19,9 @@ const WithText: FC<{ texts: string[] }> = ({ texts }) => {
         setTimeout(() => {
           setCurrent(() => (current + 1) % texts.length);
           setFade(true);
-        }, 200);
-      }, 2000),
-    [current, texts]
+        }, transition || 200);
+      }, timeout || 3000),
+    [current, texts.length, timeout, transition]
   );
 
   useEffect(() => {
@@ -35,7 +39,7 @@ const WithText: FC<{ texts: string[] }> = ({ texts }) => {
         </div>
         <div id="text">
           <Fade in={fade} unmountOnExit>
-            <Typography>{texts[current]}</Typography>
+            <Typography variant="overline">{texts[current]}</Typography>
           </Fade>
         </div>
       </Styles.Container>
@@ -43,7 +47,11 @@ const WithText: FC<{ texts: string[] }> = ({ texts }) => {
   );
 };
 
-const Loading: FC<{ texts?: string[] }> = ({ texts }) => {
+const Loading: FC<{
+  texts?: string[];
+  timeout?: number;
+  transition?: number;
+}> = ({ texts, timeout, transition }) => {
   if (!texts) {
     return (
       <Styles.Container>
@@ -55,7 +63,7 @@ const Loading: FC<{ texts?: string[] }> = ({ texts }) => {
     );
   }
 
-  return <WithText texts={texts} />;
+  return <WithText texts={texts} timeout={timeout} transition={transition} />;
 };
 
 export default Loading;
