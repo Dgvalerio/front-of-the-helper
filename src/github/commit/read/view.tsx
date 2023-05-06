@@ -1,6 +1,5 @@
 import { FC, useEffect } from 'react';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 
 import { LazyQueryExecFunction } from '@apollo/client';
 
@@ -10,8 +9,6 @@ import { Button, Grid, IconButton, Paper, Typography } from '@mui/material';
 import { Form } from '@components/form';
 
 import useTimesheetStore from '@store/timesheet/store';
-import useUiStore from '@store/ui/store';
-import { Load } from '@store/ui/types';
 import useUserStore from '@store/user/store';
 
 import { errorHandler } from '@utils/error-handler';
@@ -19,7 +16,6 @@ import { errorHandler } from '@utils/error-handler';
 import { gitCommitReadFormSchema } from '@/github/commit/read/schema';
 import { CommitsSearchContainer } from '@/github/commit/read/styles';
 import { GithubCommitRead } from '@/github/commit/read/types';
-import { useGetAllTimesheetClients } from '@/timesheet/client/read/service';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { z } from 'zod';
@@ -33,10 +29,7 @@ interface CommitsSearchProps {
 
 export const CommitsSearch: FC<CommitsSearchProps> = ({ load }) => {
   const { wipeUser } = useUserStore();
-  const { dayTimes, setDayTimes, setClients } = useTimesheetStore();
-  const { enableLoad, disableLoad } = useUiStore();
-
-  const [handleLoadClients, { data: clients }] = useGetAllTimesheetClients();
+  const { dayTimes, setDayTimes } = useTimesheetStore();
 
   const gitCommitReadForm = useForm<GithubCommitRead.Input>({
     resolver: zodResolver(gitCommitReadFormSchema),
@@ -51,23 +44,10 @@ export const CommitsSearch: FC<CommitsSearchProps> = ({ load }) => {
     append({ start: '', end: '' });
   };
 
-  const loadClients = async (): Promise<void> => {
-    toast.info('Carregando clientes, projetos e categorias...');
-
-    await handleLoadClients();
-
-    if (clients) setClients(clients.getAllTimesheetClient);
-
-    toast.success('Clientes, projetos e categorias carregados com sucesso!');
-  };
-
   const handleSearch = async (
     data: z.infer<typeof gitCommitReadFormSchema>
   ): Promise<void> => {
     try {
-      enableLoad(Load.LoadClients);
-      await loadClients();
-      disableLoad(Load.LoadClients);
       setDayTimes(data.dayTimes);
       await load({
         variables: {
