@@ -124,6 +124,11 @@ const TimesheetAppointmentCreatePage: NextPage = () => {
   const handleAddBetween = (position: number): void =>
     insert(position, appointmentForm.getValues('appointments')[position - 1]);
 
+  const handleRemove = (index: number): void =>
+    fields.length > 1
+      ? remove(index)
+      : void toast.error('Você deve realizar pelo menos um apontamento');
+
   useEffect(() => {
     const message = errorHandler(error);
 
@@ -168,6 +173,7 @@ const TimesheetAppointmentCreatePage: NextPage = () => {
               field={field}
               index={index}
               add={handleAddBetween}
+              remove={handleRemove}
               key={field.id}
             />
           ))}
