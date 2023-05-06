@@ -22,8 +22,8 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
   const [loadClients, result] = useGetAllTimesheetClients();
 
   useEffect(() => {
-    if (!clients || clients.length === 0) void loadClients();
-  }, [clients, loadClients]);
+    if (user && (!clients || clients.length === 0)) void loadClients();
+  }, [clients, loadClients, user]);
 
   useEffect(() => {
     if (result.data) setClients(result.data.getAllTimesheetClient);
