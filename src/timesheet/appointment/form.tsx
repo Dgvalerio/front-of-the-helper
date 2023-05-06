@@ -48,13 +48,23 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
 
   const selectedClient = watch(`appointments.${index}.client`);
   const client = useMemo(() => {
-    if (!selectedClient) return undefined;
+    if (!selectedClient) {
+      setValue(`appointments.${index}.project`, undefined);
+      setValue(`appointments.${index}.category`, undefined);
 
-    setValue(`appointments.${index}.project`, undefined);
-    setValue(`appointments.${index}.category`, undefined);
+      return undefined;
+    }
 
-    return clients.find(({ title }) => title === selectedClient.label);
-  }, [clients, index, selectedClient, setValue]);
+    const the = clients.find(({ title }) => title === selectedClient.label);
+
+    if (!the) return undefined;
+
+    if (!the.projects.find(({ id }) => String(id) === field.project?.value)) {
+      setValue(`appointments.${index}.project`, undefined);
+    }
+
+    return the;
+  }, [clients, field.project?.value, index, selectedClient, setValue]);
   const clientOptions = useMemo(
     () => clients.map(({ id, title }) => ({ value: id, label: title })),
     [clients]
@@ -62,12 +72,32 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
 
   const selectedProject = watch(`appointments.${index}.project`);
   const project = useMemo(() => {
-    if (!selectedProject) return undefined;
+    if (!selectedProject) {
+      setValue(`appointments.${index}.category`, undefined);
 
-    setValue(`appointments.${index}.category`, undefined);
+      return undefined;
+    }
 
-    return client?.projects.find(({ name }) => name === selectedProject.label);
-  }, [client?.projects, index, selectedProject, setValue]);
+    const the = client?.projects.find(
+      ({ name }) => name === selectedProject.label
+    );
+
+    if (!the) return undefined;
+
+    if (
+      !the.categories.find(({ id }) => String(id) === field.category?.value)
+    ) {
+      setValue(`appointments.${index}.category`, undefined);
+    }
+
+    return the;
+  }, [
+    client?.projects,
+    field.category?.value,
+    index,
+    selectedProject,
+    setValue,
+  ]);
   const projectOptions = useMemo(
     () =>
       client?.projects.map(({ id, name }) => ({
