@@ -10,6 +10,8 @@ import { Button, Grid, IconButton, Paper, Typography } from '@mui/material';
 import { Form } from '@components/form';
 
 import useTimesheetStore from '@store/timesheet/store';
+import useUiStore from '@store/ui/store';
+import { Load } from '@store/ui/types';
 import useUserStore from '@store/user/store';
 
 import { errorHandler } from '@utils/error-handler';
@@ -32,6 +34,7 @@ interface CommitsSearchProps {
 export const CommitsSearch: FC<CommitsSearchProps> = ({ load }) => {
   const { wipeUser } = useUserStore();
   const { dayTimes, setDayTimes, setClients } = useTimesheetStore();
+  const { enableLoad, disableLoad } = useUiStore();
 
   const [handleLoadClients, { data: clients }] = useGetAllTimesheetClients();
 
@@ -57,11 +60,14 @@ export const CommitsSearch: FC<CommitsSearchProps> = ({ load }) => {
 
     toast.success('Clientes, projetos e categorias carregados com sucesso!');
   };
+
   const handleSearch = async (
     data: z.infer<typeof gitCommitReadFormSchema>
   ): Promise<void> => {
     try {
+      enableLoad(Load.LoadClients);
       await loadClients();
+      disableLoad(Load.LoadClients);
       setDayTimes(data.dayTimes);
       await load({
         variables: {

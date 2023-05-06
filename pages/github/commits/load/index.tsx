@@ -21,18 +21,8 @@ import { CommitsSearch } from '@/github/commit/read/view';
 import { GroupedList } from '@/timesheet/appointment/view';
 
 const Container = styled(Box)`
-  &,
-  .left {
-    display: flex;
-  }
-
+  display: flex;
   gap: 1rem;
-
-  .left {
-    flex: 1;
-    height: calc(100vh - 4rem);
-    align-items: center;
-  }
 `;
 
 const GithubCommitsLoadPage: NextPage = () => {
