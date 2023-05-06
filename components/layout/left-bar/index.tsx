@@ -106,12 +106,12 @@ const items: Bar.Group[] = [
         name: 'Incluir',
         route: Routes.TimesheetAppointmentCreate,
       },
-      { Icon: ViewListIcon, name: 'Visualizar' },
       {
         Icon: GithubIcon,
         name: 'Incluir com Github',
         route: Routes.GithubCommitsLoad,
       },
+      { Icon: ViewListIcon, name: 'Visualizar' },
     ],
   },
   {
