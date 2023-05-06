@@ -93,6 +93,8 @@ const redirectLoad = (goTo: Routes): Load => {
       return Load.RedirectToGithubCommitsLoad;
     case Routes.TimesheetAppointmentCreate:
       return Load.RedirectToTimesheetAppointmentCreate;
+    case Routes.SystemOperation:
+      return Load.RedirectToSystemOperation;
   }
 };
 
@@ -117,7 +119,7 @@ const items: Bar.Group[] = [
   {
     name: 'Sistema',
     items: [
-      { Icon: InfoIcon, name: 'Funcionamento' },
+      { Icon: InfoIcon, name: 'Funcionamento', route: Routes.SystemOperation },
       {
         Icon: SettingsIcon,
         name: 'Configurações',
