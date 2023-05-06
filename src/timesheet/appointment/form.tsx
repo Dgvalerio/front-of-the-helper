@@ -140,20 +140,19 @@ export const AppointmentForm: FC<AppointmentFormProps> = ({
 
   return (
     <Grid item xs={12} key={field.id}>
-      <Card>
-        <CardContent
-          style={{
-            backgroundColor: transparentize(
-              errors.appointments &&
-                errors.appointments[index] &&
-                errors.appointments[index]?.message
-                ? 0.6
-                : 1,
-              palette.error.dark
-            ),
-            paddingBottom: 0,
-          }}
-        >
+      <Card
+        style={{
+          backgroundColor: transparentize(
+            errors.appointments &&
+              errors.appointments[index] &&
+              errors.appointments[index]?.message
+              ? 0.6
+              : 1,
+            palette.error.dark
+          ),
+        }}
+      >
+        <CardContent style={{ paddingBottom: 0 }}>
           <Grid container alignItems="center" spacing={1}>
             <Form.Input
               label="Cliente"
