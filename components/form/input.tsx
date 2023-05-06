@@ -6,13 +6,14 @@ import {
   Autocomplete,
   FormControlLabel,
   FormGroup,
+  Grid,
   Switch,
   TextField,
 } from '@mui/material';
 
 import { FormTypes } from '@components/form/types';
 
-export const Input: FC<FormTypes.Input> = (props) => {
+const Element: FC<FormTypes.Input> = (props) => {
   const {
     register,
     formState: { errors },
@@ -92,3 +93,14 @@ export const Input: FC<FormTypes.Input> = (props) => {
     />
   );
 };
+
+export const Input: FC<FormTypes.Input> = ({ xs, ...props }) =>
+  xs ? (
+    <Grid item xs={xs}>
+      <Element {...props} />
+    </Grid>
+  ) : (
+    <>
+      <Element {...props} />
+    </>
+  );

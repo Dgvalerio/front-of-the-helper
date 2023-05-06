@@ -9,6 +9,7 @@ const Container = styled.main`
   bottom: 0;
   left: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 1300;
@@ -25,27 +26,33 @@ const Container = styled.main`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    #hour-hand,
+    #minute-hand {
+      width: 0.2rem;
+      background-color: transparent;
+      border-top: 1rem solid
+        ${({ theme }): string => theme.palette.text.primary};
+      box-sizing: border-box;
+      position: absolute;
+    }
+
+    #hour-hand {
+      height: 3.4rem;
+      border-top-width: 2rem;
+      animation: hours linear 12s infinite;
+    }
+
+    #minute-hand {
+      height: 5.4rem;
+      border-top-width: 3rem;
+      animation: minutes linear 2s infinite;
+    }
   }
 
-  #hour-hand,
-  #minute-hand {
-    width: 0.2rem;
-    background-color: transparent;
-    border-top: 1rem solid ${({ theme }): string => theme.palette.text.primary};
-    box-sizing: border-box;
-    position: absolute;
-  }
-
-  #hour-hand {
-    height: 3.4rem;
-    border-top-width: 2rem;
-    animation: hours linear 12s infinite;
-  }
-
-  #minute-hand {
-    height: 5.4rem;
-    border-top-width: 3rem;
-    animation: minutes linear 2s infinite;
+  #text {
+    margin-top: 1rem;
+    height: 2rem;
   }
 
   @keyframes hours {

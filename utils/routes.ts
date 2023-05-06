@@ -3,6 +3,8 @@ export enum Routes {
   SignUp = `/sign-up`,
   Configurations = `/configurations`,
   GithubCommitsLoad = `/github/commits/load`,
+  TimesheetAppointmentCreate = `/timesheet/appointment/create`,
+  SystemOperation = `/system/operation`,
 }
 
 export const routes = {
@@ -10,8 +12,15 @@ export const routes = {
   signUp: (): Routes => Routes.SignUp,
   configurations: (): Routes => Routes.Configurations,
   githubCommitsLoad: (): Routes => Routes.GithubCommitsLoad,
+  createAppointment: (): Routes => Routes.TimesheetAppointmentCreate,
+  about: (): Routes => Routes.SystemOperation,
 
-  private: [Routes.Configurations, Routes.GithubCommitsLoad],
+  private: [
+    Routes.Configurations,
+    Routes.GithubCommitsLoad,
+    Routes.TimesheetAppointmentCreate,
+    Routes.SystemOperation,
+  ],
   protected: [Routes.Login, Routes.SignUp],
   public: [] as Routes[],
 };

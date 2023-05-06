@@ -6,7 +6,9 @@ import { IconButton, Tooltip } from '@mui/material';
 import useUserStore from '@store/user/store';
 
 const SignOutButton: FC = () => {
-  const { wipeUser } = useUserStore();
+  const { user, wipeUser } = useUserStore();
+
+  if (!user) return <></>;
 
   return (
     <Tooltip title="Sair" arrow placement="right">

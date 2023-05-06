@@ -3,16 +3,27 @@ import { FC } from 'react';
 import { useRouter } from 'next/router';
 
 import {
-  Commit as CommitIcon,
+  Dashboard as DashboardIcon,
+  GitHub as GithubIcon,
+  Info as InfoIcon,
+  MoreTime as AddIcon,
   Settings as SettingsIcon,
+  ViewList as ViewListIcon,
 } from '@mui/icons-material';
-import { IconButton, SvgIconTypeMap, Tooltip } from '@mui/material';
+import {
+  Grid,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  SvgIconTypeMap,
+} from '@mui/material';
 import { OverridableComponent } from '@mui/types';
 
 import styled from '@emotion/styled';
 
 import Bar from '@components/layout/bar';
-import SignOutButton from '@components/sign-out-button';
 
 import useUiStore from '@store/ui/store';
 import { Load } from '@store/ui/types';
@@ -20,15 +31,53 @@ import useUserStore from '@store/user/store';
 
 import { Routes } from '@utils/routes';
 
-const Container = styled(Bar)`
-  flex-direction: column;
-  height: 100vh;
-  position: fixed;
-  left: 0;
+import { transparentize } from 'polished';
 
-  hr {
-    width: 40%;
-    border-color: rgba(255, 255, 255, 0.1);
+namespace Bar {
+  export interface Item {
+    route?: Routes;
+    name: string;
+    Icon: OverridableComponent<SvgIconTypeMap>;
+  }
+
+  export interface Group {
+    name: string;
+    items: Item[];
+  }
+}
+
+const Container = styled(Grid)`
+  background-color: ${({ theme }): string =>
+    theme.palette.mode === 'light'
+      ? '#f1f2f7'
+      : transparentize(0.98, '#f1f2f7')};
+
+  .MuiList-root {
+    padding: 1rem;
+
+    .MuiListSubheader-root {
+      background-color: transparent;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .MuiListItemButton-root {
+      border-radius: 0.4rem;
+      color: ${({ theme }): string => theme.palette.text.secondary};
+
+      &.Mui-selected {
+        color: ${({ theme }): string => theme.palette.primary.main};
+
+        svg {
+          fill: ${({ theme }): string => theme.palette.primary.main};
+        }
+      }
+
+      .MuiListItemIcon-root {
+        min-width: auto;
+        margin-right: 0.8rem;
+      }
+    }
   }
 `;
 
@@ -42,36 +91,66 @@ const redirectLoad = (goTo: Routes): Load => {
       return Load.RedirectToConfigurations;
     case Routes.GithubCommitsLoad:
       return Load.RedirectToGithubCommitsLoad;
+    case Routes.TimesheetAppointmentCreate:
+      return Load.RedirectToTimesheetAppointmentCreate;
+    case Routes.SystemOperation:
+      return Load.RedirectToSystemOperation;
   }
 };
 
-const GoTo: FC<{
-  route: Routes;
-  name: string;
-  Icon: OverridableComponent<SvgIconTypeMap>;
-}> = ({ route, name, Icon }) => {
-  const router = useRouter();
+const items: Bar.Group[] = [
+  {
+    name: 'Apontamentos',
+    items: [
+      { Icon: DashboardIcon, name: 'Dashboard' },
+      {
+        Icon: AddIcon,
+        name: 'Incluir',
+        route: Routes.TimesheetAppointmentCreate,
+      },
+      {
+        Icon: GithubIcon,
+        name: 'Incluir com Github',
+        route: Routes.GithubCommitsLoad,
+      },
+      { Icon: ViewListIcon, name: 'Visualizar' },
+    ],
+  },
+  {
+    name: 'Sistema',
+    items: [
+      { Icon: InfoIcon, name: 'Funcionamento', route: Routes.SystemOperation },
+      {
+        Icon: SettingsIcon,
+        name: 'Configurações',
+        route: Routes.Configurations,
+      },
+    ],
+  },
+];
 
+const Item: FC<Bar.Item> = ({ name, Icon, route }) => {
+  const router = useRouter();
   const { enableLoad } = useUiStore();
 
-  const handler = (): void => {
-    if (router.route === route) return;
+  const navigate = (): void => {
+    if (!route || router.route === route) return;
 
     enableLoad(redirectLoad(route));
     void router.push(route);
   };
 
   return (
-    <Tooltip title={`Ir para ${name}`} arrow placement="right">
-      <IconButton
-        size="large"
-        color="inherit"
-        onClick={handler}
-        aria-label={`Ir para ${name}`}
-      >
-        <Icon color="disabled" />
-      </IconButton>
-    </Tooltip>
+    <ListItemButton
+      selected={route && router.pathname === route}
+      disabled={!route}
+      onClick={navigate}
+    >
+      <ListItemIcon>
+        <Icon />
+      </ListItemIcon>
+      <ListItemText primary={name} />
+    </ListItemButton>
   );
 };
 
@@ -83,19 +162,14 @@ const LeftBar: FC = () => {
   }
 
   return (
-    <Container>
-      <GoTo
-        name="Configurações"
-        route={Routes.Configurations}
-        Icon={SettingsIcon}
-      />
-      <GoTo
-        name="Carregar Commits"
-        route={Routes.GithubCommitsLoad}
-        Icon={CommitIcon}
-      />
-      <hr />
-      <SignOutButton />
+    <Container item xs={3}>
+      {items.map(({ name, items }) => (
+        <List key={name} subheader={<ListSubheader>{name}</ListSubheader>}>
+          {items.map((item) => (
+            <Item key={item.name} {...item} />
+          ))}
+        </List>
+      ))}
     </Container>
   );
 };
